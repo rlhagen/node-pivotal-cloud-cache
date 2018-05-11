@@ -21,12 +21,16 @@ fi
 
 
 # Add the symlink back to node.js (probaby not necessary)
-cd bin/node-v0.10.48-linux-x64/bin/
-ln -s ../lib/node_modules/npm/bin/npm-cli.js npm
-cd -
+if [ ! -h $NODE_HOME/bin/npm ]; then
+  echo 'Creating the symlink to npm'
+  cd $NODE_HOME/bin/
+  ln -s ../lib/node_modules/npm/bin/npm-cli.js npm
+  cd -
+fi
+
 
 if [ "$1" = "test" ]; then
-  $NODE_HOME/bin/node test.js
+  $NODE_HOME/bin/node src/test.js
 else
-  $NODE_HOME/bin/node gf-node-test.js
+  $NODE_HOME/bin/node src/gf-node-test.js
 fi
