@@ -1,6 +1,11 @@
-## Gemfire Node.js Sample
+# Gemfire Node.js Sample
+
+ALPHA CODE
 
 ## How to play around with the NodeJS GemFire driver.
+
+NOTE: These instructions are very specific to charliemblacks env.  Better instructions to come.
+
 
 Download the GemFire native Driver from : https://drive.google.com/open?id=1IbTqyf4qUBqWA4Af8dE1UfN08NDTrI9Y
 
