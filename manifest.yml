@@ -1,0 +1,12 @@
+---
+applications:
+- name: nodegfe-smd
+  memory: 512M
+  instances: 1
+  buildpack: binary_buildpack
+  command: ./scripts/start.sh
+  timeout: 180
+  env:
+    GF_LOCATOR_HOST: 172.16.65.41
+#  services:
+#   - some-mongo

@@ -1,0 +1,15 @@
+{
+  "name": "nodefire-server",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "scripts": {
+    "start": "./bin/start.sh"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "0.10.48"
+  }
+}

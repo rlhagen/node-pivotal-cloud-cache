@@ -1,6 +1,12 @@
-How to play around with the NodeJS GemFire driver.
+## Gemfire Node.js Sample
+
+## How to play around with the NodeJS GemFire driver.
+
 Download the GemFire native Driver from : https://drive.google.com/open?id=1IbTqyf4qUBqWA4Af8dE1UfN08NDTrI9Y
+
 Uncompress it somewhere - I tar zxvf the file into ~/dev/  which created ~/dev/pivotal-gemfire-native
+
+```
 sudo apt install git
 sudo apt install python2.7 python-pip
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
@@ -33,6 +39,9 @@ demo@demo-kafka:~$ cat example.xml
     <region-attributes pool-name="myPool"/>
   </region>
 </client-cache>
+```
+
+```
 demo@demo-kafka:~$ node test.js 
 [config 2018/05/04 21:43:57.179290 PDT demo-kafka:11045 139841047361344] Using Geode Native Client Product Directory: /home/demo/dev/pivotal-gemfire-native
 [config 2018/05/04 21:43:57.179381 PDT demo-kafka:11045 139841047361344] Product version: Pivotal Gemfire Native 9.2.0-build.10 (64bit) Wed, 24 Jan 2018 10:53:51 -0800
@@ -100,4 +109,4 @@ bar
 [info 2018/05/04 21:43:57.259611 PDT demo-kafka:11045 139840754534144] Updated client meta data
 [info 2018/05/04 21:43:58.251255 PDT demo-kafka:11045 139840754534144] ClientMetadataService stopped for pool myPool
 [config 2018/05/04 21:43:58.389301 PDT demo-kafka:11045 139841047361344] Stopped the Geode Native Client
-
+```
