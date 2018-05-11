@@ -12,7 +12,7 @@ echo 'Starting the App'
 # Extract the node_modules directory (cf won't push due to symlinks, so it's zipped)
 if [ -d node_modules ]; then
   echo "node_modules directory exists.  Doing nothing."
-elif [ -e node_modules.tgz ]; then
+elif [ ! -e node_modules.tgz ]; then
   echo "Didn't find node_modules directory or node_modules.tgz!!!  This is probably going to fail."
 else
   echo "Extracting node_modules"
