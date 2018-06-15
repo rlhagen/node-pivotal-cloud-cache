@@ -1,12 +1,10 @@
 ---
 applications:
-- name: nodegfe-smd
+- name: nodefire-smd
   memory: 512M
   instances: 1
-  buildpack: binary_buildpack
-  command: ./scripts/start.sh
+  buildpack: nodejs_buildpack
+  command: scripts/start_nodefire.sh
   timeout: 180
-  env:
-    GF_LOCATOR_HOST: 172.16.65.41
-#  services:
-#   - some-mongo
+  services:
+   - my-cloudcache

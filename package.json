@@ -1,15 +1,16 @@
 {
-  "name": "nodefire-server",
+  "name": "nodefire",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.16.3"
   },
   "scripts": {
-    "start": "./bin/start.sh"
+    "start": "node node-server.js",
+    "server": "scripts/start_nodefire.sh"
   },
   "devDependencies": {},
   "engines": {
-    "node": "0.10.48"
+    "node": "8.x"
   }
 }

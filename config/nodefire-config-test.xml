@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE client-cache PUBLIC
+    "-//GemStone Systems, Inc.//GemFire Declarative Caching 8.0//EN"
+    "http://www.gemstone.com/dtd/cache8_0.dtd">
+
+<client-cache>
+
+  <pool name="myPool" subscription-enabled="true">
+    <locator host="gem1.localdomain" port="7900" />
+  </pool>
+
+  <pdx read-serialized="true" />
+
+  <region name="region1" refid="CACHING_PROXY">
+    <region-attributes pool-name="myPool"/>
+  </region>
+
+</client-cache>

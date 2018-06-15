@@ -2,6 +2,7 @@
 ####  Project specific exclusions
 node_modules
 node_modules.tgz
+gemfire.tgz
 bin
 lib
 *.gfs

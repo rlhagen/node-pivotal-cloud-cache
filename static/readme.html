@@ -1,0 +1,25 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>NodeFire sample app</h1>
+        <div>
+            <p>
+                Hit the end points starting with init-cache to connect the app to PCC.
+            </p>
+            <p>
+                Connect to Gemfire: http://server:port/api/init-cache<br>
+                Get a greeting: http://server:port/api/greeting/{id}<br>
+                Add a greeting: http://server:port/api/greeting/{id}?message={message}<br>
+                Dump the ENV: http://server:port/env<br>
+            </p>
+        </div>
+        <div>
+            <p><a href="/api/greeting/init-cache">Init Cache</a></p>
+            <p><a href="/api/greeting/1?message=hello%20world">Add 1</a></p>
+            <p><a href="/api/greeting/1">Get 1</a></p>
+            <p><a href="/env">Dump the ENV</a></p>
+        </div>
+    </body>
+</html>
