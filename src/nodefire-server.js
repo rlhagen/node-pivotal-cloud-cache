@@ -2,47 +2,50 @@
 // calling the appropriate functions in the cache lib.
 
 var myCache = require('./cache.js');
-//var http    = require('http');
 var express = require('express');
 var app = express();
 
 app.get("/api/greeting/:id", (req, res) => {
 
-    var greeting = myCache.getFromCache(req.params.id);
-
-    //Cache hit, return
-    if(typeof greeting != "undefined") {
-        console.log('Found the object, returning it.')
+    if(typeof req.query.message != "undefined") {
+      console.log("Adding value to GemFire")
+      myCache.addToCache(req.params.id, req.query.message);
         res.json({
-            id: req.params.id,
-            hello: greeting,
-            source: 'cache'
+            key: req.params.id,
+            value: req.query.message,
+            source: 'GemFire put()'
         });
-    }
-    else { //Cache miss, store in cache
-        console.log('Cache miss')
-        if(typeof req.query.message != "undefined") {
-            console.log("Adding message to cache")
-            myCache.addToCache(req.params.id, req.query.message);
-            res.json({
-                id: req.params.id,
-                hello: req.query.message,
-                source: 'new'
-            });
-        }
-        else {
-            console.log('No message to add to cache.')
-        }
+    }else{
+       var greeting = myCache.getFromCache(req.params.id);
+       if(typeof greeting != "undefined") {
+         // we found something
+         console.log('Found the object, returning it.')
+         res.json({
+             key: req.params.id,
+             value: greeting,
+             source: 'GemFire get()'
+         });
+       }else{
+          console.log("Nothing in GemFire for key " + req.params.id);
+          res.json({
+              key: req.params.id,
+              value: greeting,
+              source: 'Not in GemFire'
+          });
+       }
     }
 });
 
 app.get(['/','/api/greeting/'], (req, res) => {
-    var options = { root: __dirname + '/static/' };
+    var options = { root: __dirname + '/../static/' };
     res.sendFile('readme.html', options);
 });
 
 app.get('/api/init-cache/', (req, res) => {
     myCache.initCache();
+    res.json({
+        initialized: true
+    });
 });
 
 app.get('/env', (req, res) => {

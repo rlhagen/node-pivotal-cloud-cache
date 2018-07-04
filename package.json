@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "node-pre-gyp": "^0.10.0"
   },
   "scripts": {
     "start": "node node-server.js",

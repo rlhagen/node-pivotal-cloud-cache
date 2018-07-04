@@ -7,4 +7,4 @@ applications:
   command: scripts/start_nodefire.sh
   timeout: 180
   services:
-   - my-cloudcache
+   - mypcc
