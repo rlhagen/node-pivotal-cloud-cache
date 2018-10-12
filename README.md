@@ -4,35 +4,39 @@ It's a "Greeting" app.  Store a greeting with an id, get a greeting by id.
 
 ## Dependencies
 
-The app doesn't need to be compiled, but it is dependant on the gemfire native client and the node-gemfire bridge module.
+This application uses the node GemFire driver that can been install through NPM.   If you would like to learn more about GemFire or the node library it can be found here:
+
+* https://github.com/gemfire/node-gemfire
+* http://gemfire.docs.pivotal.io
+
+## How to install Node GemFire 
+```
+npm install gemfire
+```
 
 ### Native Client
+The GemFire Node driver uses the native library to provide connectivity to GemFire.
 
 - Download the native client from PivNet.
 - Create a lib directory
 - Extract the client into it
 
-Tested with client v9.2
+Tested with client v9.2.1
 
-### Node to Gem Bridge
+## Security 
+PCF uses security to authenticate it users.   For that we have used this project to provide credentials to the servers.
 
-- The bridge code can be downloaded from:  https://github.com/charliemblack/node-gemfire
-- Build it with npm
-- Rename the directory gemfire
-- tar the directory (tar cvfz node-gemfire gemfire.tgz)
-- copy it to the root of the project
+* https://github.com/charliemblack/geode-cpp-user-password-auth
 
-(look at scripts/start_nodefire.sh to see how it's extracted into node_modules)
+The released library needs to be in lib directory.
 
-NOTE: This is a heavy weight way to deploy the bridge.  Once the full sub-set of files that are required have been identified we'll be able to deploy them only.
-
-### StdLib
+## StdLib
 
 Either the native library or the bridge has a dependency on libstdc++.so.6.  Maybe this could be statically compiled, but I copied a version into the lib directory to get the code going.  My lib dir looks like below:
 
 ```
-$ ls lib/
-libstdc++.so.6  pivotal-gemfire-native
+$ ls 
+libgeode_user_password_auth.so  libstdc++.so.6  pivotal-gemfire-nativ
 ```
 
 ## Usage
