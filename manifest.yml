@@ -1,10 +1,10 @@
 ---
 applications:
-- name: nodefire-smd
+- name: gemfire-node-sample
   memory: 512M
   instances: 1
   buildpack: nodejs_buildpack
-  command: scripts/start_nodefire.sh
+  command: scripts/start_app.sh
   timeout: 180
   services:
    - mypcc

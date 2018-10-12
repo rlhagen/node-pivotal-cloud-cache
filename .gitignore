@@ -6,6 +6,7 @@ gemfire.tgz
 bin
 lib
 *.gfs
+.history/*
 
 
 ####  Standard excludes

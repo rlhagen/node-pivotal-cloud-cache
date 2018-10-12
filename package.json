@@ -1,5 +1,5 @@
 {
-  "name": "nodefire",
+  "name": "gemfire-node-sample",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node node-server.js",
-    "server": "scripts/start_nodefire.sh"
+    "server": "scripts/start_app.sh"
   },
   "devDependencies": {},
   "engines": {
