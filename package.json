@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.3",
+    "gemfire": "^1.0.1",
     "node-pre-gyp": "^0.10.0"
   },
   "scripts": {

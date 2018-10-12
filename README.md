@@ -45,3 +45,12 @@ The main endpoint is at /api/greeting
 
 - Get a greeting: http://<server>/api/greeting/{id}
 - Add a greeting: http://<server>/api/greeting/{id}?message={message}
+
+# History for installing C libraries so our PCF Node JS app can find them 
+1. cd lib
+2. wget https://s3.amazonaws.com/gemfire-field/pivotal-gemfire-native-9.2.1-build.10-Linux-64bit.tar.gz
+3. tar zxvf pivotal-gemfire-native-9.2.1-build.10-Linux-64bit.tar.gz 
+4. wget https://github.com/charliemblack/geode-cpp-user-password-auth/releases/download/v0.1-ubuntu/libgeode_user_password_auth.so
+5. wget https://s3.amazonaws.com/gemfire-field/libstdc%2B%2B.so.6
+6. rm pivotal-gemfire-native-9.2.1-build.10-Linux-64bit.tar.gz 
+
