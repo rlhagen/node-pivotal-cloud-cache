@@ -48,7 +48,7 @@ libgeode_user_password_auth.so  libstdc++.so.6  pivotal-gemfire-native
 
 The root (home page) has links to push/get a sample value.   
 
-Initialize by hitting http://server/api/init-cache
+Initialize by hitting http://server/api/init-gemfireCache
 
 The main endpoint is at http://server/api/greeting
 
@@ -59,7 +59,7 @@ The main endpoint is at http://server/api/greeting
 ## Curl Example
 
 ```
-curl -X GET  https://gemfire-node-sample.apps.pcfone.io/api/init-cache
+curl -X GET  https://gemfire-node-sample.apps.pcfone.io/api/init-gemfireCache
 curl -X GET 'https://gemfire-node-sample.apps.pcfone.io/api/greeting/foo?message=SomeMessage'  
 curl -X GET 'https://gemfire-node-sample.apps.pcfone.io/api/greeting/foo'
 ```

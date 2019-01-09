@@ -1,10 +1,12 @@
 ---
 applications:
-- name: gemfire-node-sample
+- name: node-application
   memory: 512M
   instances: 1
   buildpack: nodejs_buildpack
-  command: scripts/start_app.sh
+  command: scripts/start.sh
   timeout: 180
   services:
-   - mypcc
+   - cloude-cache
+  env:
+    CACHE: pcc
