@@ -86,6 +86,7 @@ module.exports = function (session) {
         try {
             let jsess = store.serializer.stringify(sess);
             store.client.put(sid, jsess);
+            fn.apply(null, arguments);
         }
         catch (er) {
             return fn(er);

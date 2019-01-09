@@ -7,14 +7,20 @@ let GemfireStore = require('./gemfire/gemfire-session')(session);
 
 let app = express();
 
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-    store: new GemfireStore({}),
+let options = {
     secret: 'keyboard cat',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: { maxAge: 60000 }
-}))
+};
+
+//default to MemoryStore
+if(process.env.CACHE === "pcc"){
+    options["store"] = new GemfireStore({});
+}
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session(options));
 
 app.get("/api/greeting/:id", (req, res) => {
 
