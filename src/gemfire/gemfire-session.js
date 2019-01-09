@@ -1,8 +1,3 @@
-/*!
- * Connect - Redis
- * Copyright(c) 2012 TJ Holowaychuk <tj@vision-media.ca>
- * MIT Licensed
- */
 
 // var debug = require('debug')('connect:redis');
 var util = require('util');
@@ -60,7 +55,7 @@ module.exports = function (session) {
 
         this.serializer = options.serializer || JSON;
 
-        this.client = require('./gemfire-client');
+        this.client = require('./gemfire-client').default;
         this.client.init();
 
         // logErrors
@@ -78,16 +73,16 @@ module.exports = function (session) {
         this.ttl = options.ttl;
         this.disableTTL = options.disableTTL;
 
-        if (options.unref) this.client.unref();
-
-        self.client.on('error', function (er) {
-            debug('Redis returned err', er);
-            self.emit('disconnect', er);
-        });
-
-        self.client.on('connect', function () {
-            self.emit('connect');
-        });
+        // if (options.unref) this.client.unref();
+        //
+        // self.client.on('error', function (er) {
+        //     debug('Redis returned err', er);
+        //     self.emit('disconnect', er);
+        // });
+        //
+        // self.client.on('connect', function () {
+        //     self.emit('connect');
+        // });
     }
 
     /**
@@ -106,16 +101,15 @@ module.exports = function (session) {
 
     GemfireStore.prototype.get = function (sid, fn) {
         var store = this;
-        var psid = store.prefix + sid;
         if (!fn) fn = noop;
-        debug('GET "%s"', sid);
+        // debug('GET "%s"', sid);
 
-        let data = store.client.get(psid);
+        let data = store.client.get(sid);
         if (!data) return fn();
 
         var result;
         data = data.toString();
-        debug('GOT %s', data);
+        // debug('GOT %s', data);
 
         try {
             result = store.serializer.parse(data);
@@ -172,7 +166,7 @@ module.exports = function (session) {
      */
 
     GemfireStore.prototype.destroy = function (sid, fn) {
-        debug('DEL "%s"', sid);
+        // debug('DEL "%s"', sid);
         this.client.delete(sid);
 
         // if (Array.isArray(sid)) {
@@ -224,7 +218,7 @@ module.exports = function (session) {
         var keysObj = {}; // Use an object to dedupe as scan can return duplicates
         var pattern = store.prefix + '*';
         var scanCount = store.scanCount;
-        debug('SCAN "%s"', pattern);
+        // debug('SCAN "%s"', pattern);
         (function nextBatch (cursorId) {
             store.client.scan(cursorId, 'match', pattern, 'count', scanCount, function (err, result) {
                 if (err) return cb(err);
@@ -232,7 +226,7 @@ module.exports = function (session) {
                 var nextCursorId = result[0];
                 var keys = result[1];
 
-                debug('SCAN complete (next cursor = "%s")', nextCursorId);
+                // debug('SCAN complete (next cursor = "%s")', nextCursorId);
 
                 keys.forEach(function (key) {
                     keysObj[key] = 1;
