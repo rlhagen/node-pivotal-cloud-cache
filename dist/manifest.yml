@@ -1,0 +1,12 @@
+---
+applications:
+- name: node-application
+  memory: 512M
+  instances: 1
+  buildpack: nodejs_buildpack
+  command: scripts/start.sh
+  timeout: 180
+  services:
+   - cloude-cache
+  env:
+    CACHE: pcc
