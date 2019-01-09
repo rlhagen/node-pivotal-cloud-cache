@@ -2,7 +2,7 @@
 applications:
 - name: node-application
   memory: 512M
-  instances: 1
+  instances: 3
   buildpack: nodejs_buildpack
   command: scripts/start.sh
   timeout: 180
