@@ -24,7 +24,7 @@ var GemfireCache = function () {
     function GemfireCache() {
         _classCallCheck(this, GemfireCache);
 
-        console.log('[GemfireCache.js]: initializing...');
+        console.log('[GemfireClient.js]: initializing...');
         var cacheFactory = _gemfire2.default.createCacheFactory(propertiesFile);
         console.log('created cacheFactory...');
 

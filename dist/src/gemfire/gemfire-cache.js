@@ -30,7 +30,7 @@ var GemfireCache = {
     region: null,
 
     init: function init() {
-        console.log('[GemfireCache.js]: initializing...');
+        console.log('[GemfireClient.js]: initializing...');
         var cacheFactory = _gemfire2.default.createCacheFactory(propertiesFile);
         console.log('created cacheFactory...');
 

@@ -4,8 +4,9 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.3",
-    "node-pre-gyp": "^0.10.0",
+    "express-session": "^1.15.6",
     "morgan": "^1.8.1",
+    "node-pre-gyp": "^0.10.0",
     "rimraf": "^2.6.1"
   },
   "optionalDependencies": {
