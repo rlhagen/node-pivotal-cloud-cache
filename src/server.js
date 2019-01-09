@@ -47,6 +47,11 @@ app.get("/api/greeting/:id", (req, res) => {
     }
 });
 
+app.get(['/api/session/destroy'], (req, res) => {
+    req.session.destroy();
+    res.json({status: 'success'});
+});
+
 app.get(['/', '/api/greeting/'], (req, res) => {
     var options = {root: __dirname + '/../static/'};
     res.sendFile('readme.html', options);
