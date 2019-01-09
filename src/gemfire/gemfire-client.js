@@ -58,7 +58,7 @@ const GemfireClient = {
     },
     delete(key){
         console.log("Deleting key=" + key + " from the gemfireCache");
-        this.region.deleteSync(key);
+        this.region.removeSync(key);
     }
 };
 

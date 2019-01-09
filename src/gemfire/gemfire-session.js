@@ -103,25 +103,5 @@ module.exports = function (session) {
         this.client.delete(sid);
     };
 
-    /**
-     * Refresh the time-to-live for the session with the given `sid`.
-     *
-     * @param {String} sid
-     * @param {Session} sess
-     * @param {Function} fn
-     * @api public
-     */
-
-    // GemfireStore.prototype.touch = function (sid, sess, fn) {
-    //     let store = this;
-    //     if (!fn) fn = noop;
-    //
-    //     console.log("[gemfire-session] touching session");
-    //
-    //     store.client.get(sid);
-    //
-    //     //fn.apply(this, arguments);
-    // };
-
     return GemfireStore;
 };
