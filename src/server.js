@@ -1,6 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import GemfireStore from './gemfire/gemfire-session';
+import GemFireConfig from "./gemfire/gemfire-config";
 
 let app = express();
 
@@ -12,7 +13,7 @@ let options = {
 };
 
 if(process.env.SESSION_STORE === "pcc"){
-    options.store = new GemfireStore(session, {});
+    options.store = new GemfireStore(session, GemFireConfig);
 }
 
 app.set('trust proxy', 1);

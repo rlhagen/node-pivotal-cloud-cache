@@ -10,7 +10,7 @@ export default class GemfireStore {
         Store.call(this, options);
 
         this.serializer = options.serializer || JSON;
-        this.client = new GemfireClient();
+        this.client = new GemfireClient(options);
 
         util.inherits(GemfireStore, Store);
     }

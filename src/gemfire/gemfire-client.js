@@ -1,11 +1,9 @@
 const propertiesFile = __dirname + '/../../config/gemfire.properties';
 import gemfire from "gemfire";
-import GemFireConfig from "./gemfire-config";
-
 
 export default class GemfireClient {
 
-    constructor(){
+    constructor(options){
         console.log('[GemfireClient]: initializing...');
         let cacheFactory = gemfire.createCacheFactory(propertiesFile);
         console.log('[GemfireClient]: created cacheFactory...');
@@ -32,7 +30,7 @@ export default class GemfireClient {
 
         console.log('creating region...');
         this.cache = cacheFactory.create();
-        this.region = this.cache.createRegion(GemFireConfig.region, {type: GemFireConfig.type});
+        this.region = this.cache.createRegion(options.region, {type: options.type});
         console.log('[GemfireClient]: done...');
 
     }
