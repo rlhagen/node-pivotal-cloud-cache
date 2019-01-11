@@ -1,47 +1,19 @@
 import GemfireClient from './gemfire-client';
-let util = require('util');
+import util from 'util';
 let noop = function(){};
 
-/**
- * Return the `GemfireStore` extending `express`'s session Store.
- *
- * @param {object} express session
- * @return {Function}
- * @api public
- */
+export default class GemfireStore {
 
-module.exports = function (session) {
+    constructor(session, options){
+        let Store = session.Store;
 
-    /**
-     * Express's session Store.
-     */
-
-    let Store = session.Store;
-
-    /**
-     * Initialize GemfireStore with the given `options`.
-     *
-     * @param {Object} options
-     * @api public
-     */
-
-    function GemfireStore (options) {
-        if (!(this instanceof GemfireStore)) {
-            throw new TypeError('Cannot call GemfireStore constructor as a function');
-        }
-
-        options = options || {};
         Store.call(this, options);
 
         this.serializer = options.serializer || JSON;
         this.client = new GemfireClient();
+
+        util.inherits(GemfireStore, Store);
     }
-
-    /**
-     * Inherit from `Store`.
-     */
-
-    util.inherits(GemfireStore, Store);
 
     /**
      * Attempt to fetch session by the given `sid`.
@@ -51,14 +23,14 @@ module.exports = function (session) {
      * @api public
      */
 
-    GemfireStore.prototype.get = function (sid, fn) {
+    get(sid, fn) {
         let store = this;
         if (!fn) fn = noop;
 
         let data = store.client.get(sid);
         if (!data) return fn();
 
-        var result;
+        let result;
         data = data.toString();
 
         try {
@@ -67,7 +39,7 @@ module.exports = function (session) {
             return fn(er);
         }
         return fn(null, result);
-    };
+    }
 
     /**
      * Commit the given `sess` object associated with the given `sid`.
@@ -78,7 +50,7 @@ module.exports = function (session) {
      * @api public
      */
 
-    GemfireStore.prototype.set = function (sid, sess, fn) {
+    set(sid, sess, fn) {
         let store = this;
         if (!fn) fn = noop;
 
@@ -91,7 +63,7 @@ module.exports = function (session) {
             console.log("[GemfireSession]: ERROR ", error);
             return fn(er);
         }
-    };
+    }
 
     /**
      * Destroy the session associated with the given `sid`.
@@ -100,12 +72,10 @@ module.exports = function (session) {
      * @api public
      */
 
-    GemfireStore.prototype.destroy = function (sid, fn) {
+    destroy(sid, fn) {
         let store = this;
         if (!fn) fn = noop;
         store.client.delete(sid);
         fn.apply(null, arguments);
-    };
-
-    return GemfireStore;
-};
+    }
+}
