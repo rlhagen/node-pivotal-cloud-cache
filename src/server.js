@@ -9,10 +9,10 @@ let options = {
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    cookie: {httpOnly: true, maxAge: 60000}
 };
 
-if(process.env.SESSION_STORE === "pcc"){
+if (process.env.SESSION_STORE === "pcc") {
     options.store = new GemfireStore(session, GemFireConfig);
 }
 
@@ -22,31 +22,33 @@ app.use(session(options));
 app.get("/api/greeting/:id", (req, res) => {
 
     if (typeof req.query.message != "undefined") {
-        if(!req.session.messages){
+        if (!req.session.messages) {
             req.session.messages = {};
         }
-        req.session.messages[req.params.id] =  req.query.message;
+        req.session.messages[req.params.id] = req.query.message;
         res.json({
             key: req.params.id,
             value: req.query.message
         });
     } else {
-        let greeting = req.session.messages[req.params.id];
-        if (typeof greeting != "undefined") {
-            // we found something
-            console.log('Found the object, returning it.')
-            res.json({
-                key: req.params.id,
-                value: greeting
-            });
-        } else {
-            console.log("Nothing in cache for key " + req.params.id);
-            res.json({
-                key: req.params.id,
-                value: greeting,
-                source: 'Not in cache'
-            });
+        if (typeof req.session.messages != "undefined") {
+            let greeting = req.session.messages[req.params.id];
+            if (typeof greeting != "undefined") {
+                // we found something
+                console.log('Found the object, returning it.')
+                res.json({
+                    key: req.params.id,
+                    value: greeting
+                });
+            }
         }
+
+        console.log("Nothing in cache for key " + req.params.id);
+        res.json({
+            key: req.params.id,
+            value: '[ERROR]: Not found!',
+            source: 'Not in cache'
+        });
     }
 });
 

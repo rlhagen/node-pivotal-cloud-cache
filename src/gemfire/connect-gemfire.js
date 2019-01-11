@@ -56,12 +56,12 @@ export default class GemfireStore {
 
         console.log("[GemfireSession]: getting key = " + sid);
         let data = this.region.getSync(sid);
-        console.log("[GemfireSession]: retrieved value =  " + JSON.stringify(data));
         if (!data) return fn();
 
-        let result;
+        console.log("[GemfireSession]: retrieved value =  " + JSON.stringify(data));
         data = data.toString();
 
+        let result = null;
         try {
             result = store.serializer.parse(data);
         } catch (er) {
