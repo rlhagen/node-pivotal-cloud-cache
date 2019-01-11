@@ -1,3 +1,4 @@
+import GemfireClient from './gemfire-client';
 let util = require('util');
 let noop = function(){};
 
@@ -33,9 +34,7 @@ module.exports = function (session) {
         Store.call(this, options);
 
         this.serializer = options.serializer || JSON;
-
-        this.client = require('./gemfire-client').default;
-        this.client.init();
+        this.client = new GemfireClient();
     }
 
     /**

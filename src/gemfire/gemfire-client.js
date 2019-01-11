@@ -1,17 +1,11 @@
-// Cache abstraction that uses Gemfire.
-
-// I put the properties in here as an example of using GemFire properties file.
-// The items in the property file can be overwritten or plainly set using the CacheFactory.set() function.
-
 const propertiesFile = __dirname + '/../../config/gemfire.properties';
 import gemfire from "gemfire";
 import GemFireConfig from "./gemfire-config";
 
-const GemfireClient = {
-    cache: null,
-    region: null,
 
-    init() {
+export default class GemfireClient {
+
+    constructor(){
         console.log('[GemfireClient]: initializing...');
         let cacheFactory = gemfire.createCacheFactory(propertiesFile);
         console.log('[GemfireClient]: created cacheFactory...');
@@ -40,20 +34,22 @@ const GemfireClient = {
         this.cache = cacheFactory.create();
         this.region = this.cache.createRegion(GemFireConfig.region, {type: GemFireConfig.type});
         console.log('[GemfireClient]: done...');
-    },
+
+    }
 
     put(key, value) {
         console.log("[GemfireClient]: adding (" + key + ", " + JSON.stringify(value) + ")");
         this.region.putSync(key, value);
         console.log("[GemfireClient]: adding successful...");
-    },
+    }
 
     get(key) {
         console.log("[GemfireClient]: getting key = " + key);
         let value = this.region.getSync(key);
         console.log("[GemfireClient]: retrieved value =  " + JSON.stringify(value));
         return value;
-    },
+    }
+
     delete(key){
         console.log("[GemfireClient]: deleting key=" + key);
         this.region.remove(key, function(error){
@@ -64,6 +60,5 @@ const GemfireClient = {
             }
         });
     }
-};
 
-export default GemfireClient
+}
