@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import GemfireStore from './gemfire/gemfire-session';
+import GemfireStore from './gemfire/connect-gemfire';
 import GemFireConfig from "./gemfire/gemfire-config";
 
 let app = express();
