@@ -2,6 +2,10 @@
 
 It's a "Greeting" app.  Store a greeting with an id, get a greeting by id.  
 
+# Build and Deploy
+`npm run build && pushd dist && cf push node-application && popd
+`
+
 # PCF Adding Dependent Libraries
 
 Since the application is deployed to PCF there are some dependent libraries that need to be installed.   To simplify the creation of the application we will host the needed libraries in the ``lib`` directory.   This is done so when we ``cf push`` the application all of the additional required libraries will be in the droplet.
@@ -59,12 +63,9 @@ The main endpoint is at http://server/api/greeting
 ## Curl Example
 
 ```
-curl -X GET  https://gemfire-node-sample.apps.pcfone.io/api/init-gemfireCache
 curl -X GET 'https://gemfire-node-sample.apps.pcfone.io/api/greeting/foo?message=SomeMessage'  
 curl -X GET 'https://gemfire-node-sample.apps.pcfone.io/api/greeting/foo'
 ```
-
-
 
 # Library Install Command History
 

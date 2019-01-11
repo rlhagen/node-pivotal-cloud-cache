@@ -9,4 +9,4 @@ applications:
   services:
    - cloude-cache
   env:
-    CACHE: pcc
+    SESSION_STORE: pcc

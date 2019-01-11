@@ -2,7 +2,7 @@ let util = require('util');
 let noop = function(){};
 
 /**
- * Return the `RedisStore` extending `express`'s session Store.
+ * Return the `GemfireStore` extending `express`'s session Store.
  *
  * @param {object} express session
  * @return {Function}
@@ -86,9 +86,10 @@ module.exports = function (session) {
         try {
             let jsess = store.serializer.stringify(sess);
             store.client.put(sid, jsess);
-            fn.apply(null, arguments);
+            return fn(null);
         }
         catch (er) {
+            console.log("[GemfireSession]: ERROR ", error);
             return fn(er);
         }
     };
@@ -101,7 +102,10 @@ module.exports = function (session) {
      */
 
     GemfireStore.prototype.destroy = function (sid, fn) {
-        this.client.delete(sid);
+        let store = this;
+        if (!fn) fn = noop;
+        store.client.delete(sid);
+        fn.apply(null, arguments);
     };
 
     return GemfireStore;

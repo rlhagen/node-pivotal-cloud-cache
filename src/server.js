@@ -1,9 +1,6 @@
-// nodefire test app.  Creates web session and the end points
-// calling the appropriate functions in the cache lib.
-
 import express from 'express';
 import session from 'express-session';
-let GemfireStore = require('./gemfire/gemfire-session')(session);
+const GemfireStore = require('./gemfire/gemfire-session')(session);
 
 let app = express();
 
@@ -14,12 +11,11 @@ let options = {
     cookie: { maxAge: 60000 }
 };
 
-//default to MemoryStore
-if(process.env.CACHE === "pcc"){
-    options["store"] = new GemfireStore({});
+if(process.env.SESSION_STORE === "pcc"){
+    options.store = new GemfireStore({});
 }
 
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1);
 app.use(session(options));
 
 app.get("/api/greeting/:id", (req, res) => {
@@ -34,7 +30,7 @@ app.get("/api/greeting/:id", (req, res) => {
             value: req.query.message
         });
     } else {
-        var greeting = req.session.messages[req.params.id];
+        let greeting = req.session.messages[req.params.id];
         if (typeof greeting != "undefined") {
             // we found something
             console.log('Found the object, returning it.')
@@ -59,7 +55,7 @@ app.get(['/api/session/destroy'], (req, res) => {
 });
 
 app.get(['/', '/api/greeting/'], (req, res) => {
-    var options = {root: __dirname + '/../static/'};
+    let options = {root: __dirname + '/../static/'};
     res.sendFile('readme.html', options);
 });
 

@@ -8,16 +8,13 @@ import gemfire from "gemfire";
 import GemFireConfig from "./gemfire-config";
 
 const GemfireClient = {
-    name: () => {
-        return "gemfire"
-    },
     cache: null,
     region: null,
 
     init() {
-        console.log('[GemfireClient.js]: initializing...');
+        console.log('[GemfireClient]: initializing...');
         let cacheFactory = gemfire.createCacheFactory(propertiesFile);
-        console.log('created cacheFactory...');
+        console.log('[GemfireClient]: created cacheFactory...');
 
         let credentials = JSON.parse(process.env.VCAP_SERVICES)["p-cloudcache"][0].credentials;
 
@@ -35,34 +32,35 @@ const GemfireClient = {
             let locator = credentials.locators[item];
             let host = locator.slice(0, locator.indexOf("["));
             let port = locator.slice(locator.indexOf("[") + 1, locator.indexOf("]"));
-            console.log('adding ' + host + ':' + port + ' ...');
+            console.log('[GemfireClient]: adding ' + host + ':' + port + ' ...');
             cacheFactory.addLocator(host, parseInt(port));
         }
 
         console.log('creating region...');
         this.cache = cacheFactory.create();
         this.region = this.cache.createRegion(GemFireConfig.region, {type: GemFireConfig.type});
-        console.log('done...');
+        console.log('[GemfireClient]: done...');
     },
 
     put(key, value) {
-        console.log("Adding key=" + key + " to the gemfireCache");
+        console.log("[GemfireClient]: adding (" + key + ", " + JSON.stringify(value) + ")");
         this.region.putSync(key, value);
+        console.log("[GemfireClient]: adding successful...");
     },
 
     get(key) {
-        console.log("Getting key=" + key + " from the gemfireCache");
+        console.log("[GemfireClient]: getting key = " + key);
         let value = this.region.getSync(key);
-        console.log("The value in the gemfireCache was " + JSON.stringify(value));
+        console.log("[GemfireClient]: retrieved value =  " + JSON.stringify(value));
         return value;
     },
     delete(key){
-        console.log("Deleting key=" + key + " from the gemfireCache");
+        console.log("[GemfireClient]: deleting key=" + key);
         this.region.remove(key, function(error){
             if(error){
                 console.log(error);
             }else{
-                console.log("removed entry...");
+                console.log("[GemfireClient]: removed entry successful...");
             }
         });
     }
