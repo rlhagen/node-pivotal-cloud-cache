@@ -1,6 +1,13 @@
 # A Node GemFire Sample Application for PCF
 
+connect --use-http=true --url=https://cloudcache-a3149c1b-07ef-435e-8933-6c9557988232.run.pcfone.io/gemfire/v1 --user=cluster_operator_8hN8UGlZ6btpDIAEyEiT0A --password=EPhGaVsaaaUZpVzyUWF2QQ
+
+cf create-service credhub default credhub -c '{"name":"SESSION_STORE","value":"pcc"}'
+
 It's a "Greeting" app.  Store a greeting with an id, get a greeting by id.  
+
+# Create Region in PCC
+`create region --name=default --type=PARTITION --entry-time-to-live-expiration=3600 --enable-statistics= true`
 
 # Build and Deploy
 `npm run build && pushd dist && cf push node-application && popd

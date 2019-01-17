@@ -1,4 +1,4 @@
-const propertiesFile = __dirname + '/../../config/gemfire.properties';
+const propertiesFile = __dirname + '/../config/gemfire.properties';
 import gemfire from "gemfire";
 import util from 'util';
 let noop = function(){};
