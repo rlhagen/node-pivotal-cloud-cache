@@ -22,6 +22,9 @@ let stub = {
                             getSync: (key) => {
                                 methods["get"] = true;
                                 return cache[key];
+                            },
+                            remove: (key, error) => {
+                                methods["remove"] = true;
                             }
                         }
                     }
@@ -59,7 +62,7 @@ function getApp() {
 
 describe('GemfireStore tests for express session', function () {
 
-    it('GemfireStore stores session when it is created', function (done) {
+    it('GemfireStore.put is called when session is created', function (done) {
         let app = getApp();
         app.get("/", function (req, res) {
             res.status(200).json({});
@@ -74,7 +77,7 @@ describe('GemfireStore tests for express session', function () {
             });
     });
 
-    it('GemfireStore loads session when session is reloaded', function (done) {
+    it('GemfireStore.get is called when session is reloaded', function (done) {
         let app = getApp();
         app.get("/", function (req, res) {
             req.session.reload(()=>{});
@@ -86,6 +89,22 @@ describe('GemfireStore tests for express session', function () {
             .end(function (err, res) {
                 if (err) throw err;
                 assert.strictEqual(methods["get"], true);
+                done();
+            });
+    });
+
+    it('GemfireStore.remove is called when session is destroyed', function (done) {
+        let app = getApp();
+        app.get("/", function (req, res) {
+            req.session.destroy();
+            res.status(200).json({});
+        });
+        request(app)
+            .get("/")
+            .expect(200)
+            .end(function (err, res) {
+                if (err) throw err;
+                assert.strictEqual(methods["remove"], true);
                 done();
             });
     });
