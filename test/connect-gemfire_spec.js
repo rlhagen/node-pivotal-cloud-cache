@@ -1,7 +1,42 @@
 import session from "express-session";
-//import GemfireStore from "../src/connect-gemfire";
 import express from 'express';
 import request from 'supertest';
+import rewiremock from 'rewiremock';
+import assert from 'assert';
+
+
+//stub/mock for gemfire module
+let cache = {};
+let methods = {};
+let stub = {
+    createCacheFactory: (propertiesFile) => {
+        return {
+            create: () => {
+                return {
+                    createRegion: () => {
+                        return {
+                            putSync: (key, value) => {
+                                methods["put"] = true;
+                                cache[key] = value;
+                            },
+                            getSync: (key) => {
+                                methods["get"] = true;
+                                return cache[key];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+//mock gemfire module using stub
+rewiremock('gemfire')
+    .with(stub);
+rewiremock.enable();
+const GemfireStore = require("../src/connect-gemfire").default;
+rewiremock.disable();
 
 
 function getApp() {
@@ -11,7 +46,9 @@ function getApp() {
         resave: true,
         saveUninitialized: true,
         cookie: {httpOnly: true, maxAge: 60000},
-        //store: new GemfireStore(session, {})
+        store: new GemfireStore(session, {
+            credentials: {}
+        })
     };
 
     let app = express();
@@ -20,20 +57,35 @@ function getApp() {
     return app;
 }
 
-describe('', function () {
+describe('GemfireStore tests for express session', function () {
 
-    let app = getApp();
-    app.get("/", function (req, res) {
-        res.status(200).json({});
-    });
-
-    it('should ', function (done) {
+    it('GemfireStore stores session when it is created', function (done) {
+        let app = getApp();
+        app.get("/", function (req, res) {
+            res.status(200).json({});
+        });
         request(app)
             .get("/")
             .expect(200)
             .end(function (err, res) {
                 if (err) throw err;
+                assert.strictEqual(methods["put"], true);
+                done();
+            });
+    });
 
+    it('GemfireStore loads session when session is reloaded', function (done) {
+        let app = getApp();
+        app.get("/", function (req, res) {
+            req.session.reload(()=>{});
+            res.status(200).json({});
+        });
+        request(app)
+            .get("/")
+            .expect(200)
+            .end(function (err, res) {
+                if (err) throw err;
+                assert.strictEqual(methods["get"], true);
                 done();
             });
     });

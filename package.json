@@ -27,6 +27,7 @@
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
+    "rewiremock": "^3.13.0",
     "supertest": "^3.4.1"
   },
   "engines": {

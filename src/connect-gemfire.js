@@ -91,7 +91,7 @@ export default class GemfireStore {
             return fn(null);
         }
         catch (er) {
-            console.log("[GemfireSession]: ERROR ", error);
+            console.log("[GemfireSession]: ERROR ", er);
             return fn(er);
         }
     }
