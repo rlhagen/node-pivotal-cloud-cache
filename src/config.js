@@ -3,7 +3,22 @@
 const config = {
     gemfire: {
         region: process.env.REGION || "default",
-        type: process.env.TYPE || "PROXY"
+        type: process.env.TYPE || "PROXY",
+        //can optionally specify settings for local gemfire instance
+        // credentials: {
+        //     locators: [
+        //         "localhost[40404]"
+        //     ],
+        //     users: [
+        //         {
+        //             password: "secret$$_here",
+        //             roles: [
+        //                 "developer"
+        //             ],
+        //             username: "developer_username_khere"
+        //         }
+        //     ]
+        // }
     },
     /**
      * Supports setting SESSION_STORE variable as env variable or in Credhub
