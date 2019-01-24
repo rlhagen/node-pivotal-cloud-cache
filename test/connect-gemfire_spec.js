@@ -25,6 +25,7 @@ let stub = {
                             },
                             remove: (key, error) => {
                                 methods["remove"] = true;
+                                delete cache[key];
                             }
                         }
                     }
