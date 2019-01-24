@@ -13,6 +13,10 @@ const config = {
        return config.getEnvironmentVariable("SESSION_STORE", "local");
     },
     getEnvironmentVariable(name, defaultValue){
+        if(process.env.VCAP_SERVICES === undefined){
+            return defaultValue;
+        }
+
         let vcap = JSON.parse(process.env.VCAP_SERVICES);
         if (vcap[name] !== undefined) {
             return vcap[name];
