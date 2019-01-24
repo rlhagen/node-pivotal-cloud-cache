@@ -11,7 +11,7 @@ let noop = function(){};
 export default class GemfireStore {
 
     constructor(session, options){
-        console.log('[GemfireSession]: initializing...');
+        console.log('[GemfireStore]: initializing...');
 
         let Store = session.Store;
         Store.call(this, options);
@@ -35,7 +35,7 @@ export default class GemfireStore {
             let locator = credentials.locators[item];
             let host = locator.slice(0, locator.indexOf("["));
             let port = locator.slice(locator.indexOf("[") + 1, locator.indexOf("]"));
-            console.log('[GemfireSession]: adding ' + host + ':' + port + ' ...');
+            console.log('[GemfireStore]: adding ' + host + ':' + port + ' ...');
             cacheFactory.addLocator(host, parseInt(port));
         }
 
@@ -44,7 +44,7 @@ export default class GemfireStore {
 
         util.inherits(GemfireStore, Store);
 
-        console.log('[GemfireSession]: done...');
+        console.log('[GemfireStore]: done...');
     }
 
     /**
@@ -59,11 +59,11 @@ export default class GemfireStore {
         let store = this;
         if (!fn) fn = noop;
 
-        console.log("[GemfireSession]: getting key = " + sid);
+        console.log("[GemfireStore]: getting key = " + sid);
         let data = this.region.getSync(sid);
         if (!data) return fn();
 
-        console.log("[GemfireSession]: retrieved value =  " + JSON.stringify(data));
+        console.log("[GemfireStore]: retrieved value =  " + JSON.stringify(data));
         data = data.toString();
 
         let result = null;
@@ -90,13 +90,13 @@ export default class GemfireStore {
 
         try {
             let jsess = store.serializer.stringify(sess);
-            console.log("[GemfireSession]: adding (" + sid + ", " + JSON.stringify(sess) + ")");
+            console.log("[GemfireStore]: adding (" + sid + ", " + JSON.stringify(sess) + ")");
             this.region.putSync(sid, jsess);
-            console.log("[GemfireSession]: adding successful...");
+            console.log("[GemfireStore]: adding successful...");
             return fn(null);
         }
         catch (er) {
-            console.log("[GemfireSession]: ERROR ", er);
+            console.log("[GemfireStore]: ERROR ", er);
             return fn(er);
         }
     }
@@ -110,12 +110,12 @@ export default class GemfireStore {
 
     destroy(sid, fn) {
         if (!fn) fn = noop;
-        console.log("[GemfireSession]: deleting key=" + sid);
+        console.log("[GemfireStore]: deleting key=" + sid);
         this.region.remove(sid, function(error){
             if(error){
                 fn(error);
             }else{
-                console.log("[GemfireSession]: removed entry successful...");
+                console.log("[GemfireStore]: removed entry successful...");
             }
         });
         fn.apply(null, arguments);
