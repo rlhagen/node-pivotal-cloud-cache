@@ -1,6 +1,8 @@
 # A Node GemFire Sample Application for PCF
 
-Reference: https://github.com/charliemblack/gemfire-node-sample
+References:
+- https://github.com/charliemblack/gemfire-node-sample
+- https://www.npmjs.com/package/express-session#session-store-implementation
 
 It's a "Greeting" app.  Store a greeting with an id, get a greeting by id.  
 

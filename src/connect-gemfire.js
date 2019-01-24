@@ -3,6 +3,11 @@ import gemfire from "gemfire";
 import util from 'util';
 let noop = function(){};
 
+/**
+ * Refer to https://www.npmjs.com/package/express-session#session-store-implementation
+ * This class implements the express-session Store interface.
+ * get, set, and destroy are required.
+ */
 export default class GemfireStore {
 
     constructor(session, options){
