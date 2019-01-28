@@ -28,17 +28,16 @@ const config = {
        return config.getEnvironmentVariable("SESSION_STORE", "local");
     },
     getEnvironmentVariable(name, defaultValue){
-        if(process.env.VCAP_SERVICES === undefined){
-            return defaultValue;
-        }
 
         if (process.env[name] !== undefined) {
             return process.env[name];
         }
 
-        let vcap = JSON.parse(process.env.VCAP_SERVICES);
-        if (vcap["credhub"] !== undefined) {
-            return vcap["credhub"][0].credentials[name];
+        if(process.env.VCAP_SERVICES === undefined){
+            let vcap = JSON.parse(process.env.VCAP_SERVICES);
+            if (vcap["credhub"] !== undefined) {
+                return vcap["credhub"][0].credentials[name];
+            }
         }
 
         return defaultValue;
