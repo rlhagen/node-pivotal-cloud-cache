@@ -33,7 +33,7 @@ const config = {
             return process.env[name];
         }
 
-        if(process.env.VCAP_SERVICES === undefined){
+        if(process.env.VCAP_SERVICES !== undefined){
             let vcap = JSON.parse(process.env.VCAP_SERVICES);
             if (vcap["credhub"] !== undefined) {
                 return vcap["credhub"][0].credentials[name];
