@@ -118,6 +118,6 @@ export default class GemfireStore {
                 console.log("[GemfireStore]: removed entry successful...");
             }
         });
-        fn.apply(null, arguments);
+        return fn(null);
     }
 }

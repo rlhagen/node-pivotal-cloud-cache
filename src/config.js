@@ -32,11 +32,11 @@ const config = {
             return defaultValue;
         }
 
-        let vcap = JSON.parse(process.env.VCAP_SERVICES);
-        if (vcap[name] !== undefined) {
-            return vcap[name];
+        if (process.env[name] !== undefined) {
+            return process.env[name];
         }
 
+        let vcap = JSON.parse(process.env.VCAP_SERVICES);
         if (vcap["credhub"] !== undefined) {
             return vcap["credhub"][0].credentials[name];
         }
