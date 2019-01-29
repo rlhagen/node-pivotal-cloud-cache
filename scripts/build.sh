@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-babel src --out-dir dist/src
-
 cp package.json dist/
 cp package-lock.json dist/
 cp manifest.yml dist/
