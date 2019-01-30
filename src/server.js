@@ -12,6 +12,16 @@ let options = {
     cookie: {httpOnly: true, maxAge: 60000}
 };
 
+//using as a simple cache (not for http sessions)
+let cache = new GemfireStore(null, {
+    region: "generic",
+    type: process.env.TYPE || "PROXY"
+});
+
+cache.set("cat", {"kitty" : "Archie"}, ()=> {});
+cache.get("cat", ()=> {});
+
+// used for http session caching
 if (config.getSessionCachingStrategy() === "pcc") {
     options.store = new GemfireStore(session, config.gemfire);
 }

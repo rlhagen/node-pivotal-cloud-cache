@@ -1,7 +1,47 @@
 const propertiesFile = __dirname + '/../config/gemfire.properties';
 import gemfire from "gemfire";
 import util from 'util';
-let noop = function(){};
+
+let cacheFactory = null;
+let cache = null;
+
+let noop = function () {
+};
+
+/**
+ * This can only be called once per application instance
+ * @param options
+ */
+function connect(options) {
+    cacheFactory = gemfire.createCacheFactory(propertiesFile);
+
+    // Get the user name and password from vcap services if not provided
+    let credentials = options.credentials ? options.credentials :
+        JSON.parse(process.env.VCAP_SERVICES)["p-cloudcache"][0].credentials;
+
+    for (let item in credentials.users) {
+        let currUser = credentials.users[item];
+        if ((currUser.roles.indexOf("developer") > -1)) {
+            cacheFactory.set("security-username", currUser.username);
+            cacheFactory.set("security-password", currUser.password);
+        }
+    }
+
+    // Get the locators from the vcap services
+    for (let item  in credentials.locators) {
+        let locator = credentials.locators[item];
+        let host = locator.slice(0, locator.indexOf("["));
+        let port = locator.slice(locator.indexOf("[") + 1, locator.indexOf("]"));
+        console.log('[GemfireStore]: adding ' + host + ':' + port + ' ...');
+        cacheFactory.addLocator(host, parseInt(port));
+    }
+
+    cache = cacheFactory.create();
+}
+
+function isConnected() {
+    return cache !== null;
+}
 
 /**
  * Refer to https://www.npmjs.com/package/express-session#session-store-implementation
@@ -10,39 +50,21 @@ let noop = function(){};
  */
 export default class GemfireStore {
 
-    constructor(session, options){
+    constructor(session, options) {
         console.log('[GemfireStore]: initializing...');
-
-        let Store = session.Store;
-        Store.call(this, options);
         this.serializer = options.serializer || JSON;
-        let cacheFactory = gemfire.createCacheFactory(propertiesFile);
 
-        // Get the user name and password from vcap services if not provided
-        let credentials = options.credentials ? options.credentials :
-            JSON.parse(process.env.VCAP_SERVICES)["p-cloudcache"][0].credentials;
-
-        for (let item in credentials.users) {
-            let currUser = credentials.users[item];
-            if ((currUser.roles.indexOf("developer") > -1)) {
-                cacheFactory.set("security-username", currUser.username);
-                cacheFactory.set("security-password", currUser.password);
-            }
+        if (!isConnected()) {
+            connect(options);
         }
 
-        // Get the locators from the vcap services
-        for (let item  in credentials.locators) {
-            let locator = credentials.locators[item];
-            let host = locator.slice(0, locator.indexOf("["));
-            let port = locator.slice(locator.indexOf("[") + 1, locator.indexOf("]"));
-            console.log('[GemfireStore]: adding ' + host + ':' + port + ' ...');
-            cacheFactory.addLocator(host, parseInt(port));
+        this.region = cache.createRegion(options.region, {type: options.type});
+
+        if (session !== null) {
+            let Store = session.Store;
+            Store.call(this, options);
+            util.inherits(GemfireStore, Store);
         }
-
-        this.cache = cacheFactory.create();
-        this.region = this.cache.createRegion(options.region, {type: options.type});
-
-        util.inherits(GemfireStore, Store);
 
         console.log('[GemfireStore]: done...');
     }
@@ -94,8 +116,7 @@ export default class GemfireStore {
             this.region.putSync(sid, jsess);
             console.log("[GemfireStore]: adding successful...");
             return fn(null);
-        }
-        catch (er) {
+        } catch (er) {
             console.log("[GemfireStore]: ERROR ", er);
             return fn(er);
         }
@@ -111,10 +132,10 @@ export default class GemfireStore {
     destroy(sid, fn) {
         if (!fn) fn = noop;
         console.log("[GemfireStore]: deleting key=" + sid);
-        this.region.remove(sid, function(error){
-            if(error){
+        this.region.remove(sid, function (error) {
+            if (error) {
                 fn(error);
-            }else{
+            } else {
                 console.log("[GemfireStore]: removed entry successful...");
             }
         });
