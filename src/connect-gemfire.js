@@ -2,7 +2,6 @@ const propertiesFile = __dirname + '/../config/gemfire.properties';
 import gemfire from "gemfire";
 import util from 'util';
 
-let cacheFactory = null;
 let cache = null;
 
 let noop = function () {
@@ -13,7 +12,7 @@ let noop = function () {
  * @param options
  */
 function connect(options) {
-    cacheFactory = gemfire.createCacheFactory(propertiesFile);
+    let cacheFactory = gemfire.createCacheFactory(propertiesFile);
 
     // Get the user name and password from vcap services if not provided
     let credentials = options.credentials ? options.credentials :
