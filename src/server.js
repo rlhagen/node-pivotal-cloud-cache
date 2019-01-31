@@ -3,6 +3,27 @@ import session from 'express-session';
 import GemfireStore from './connect-gemfire';
 import config from "./config";
 
+
+//using as a simple cache (not for http sessions)
+let cache = new GemfireStore(null, {
+    region: "generic",
+    type: process.env.TYPE || "PROXY"
+});
+
+cache.set("favorite-pets", {"kitty": "Archie"}, (err) => {
+    if (err) {
+        console.log('ERROR: ', err);
+    }
+});
+cache.get("favorite-pets", (err, result) => {
+    if (err) {
+        console.log('ERROR: ', err);
+    } else {
+        console.log('found = ', result);
+    }
+});
+// end of simple cache example
+
 let app = express();
 
 let options = {
@@ -11,15 +32,6 @@ let options = {
     saveUninitialized: true,
     cookie: {httpOnly: true, maxAge: 60000}
 };
-
-//using as a simple cache (not for http sessions)
-let cache = new GemfireStore(null, {
-    region: "generic",
-    type: process.env.TYPE || "PROXY"
-});
-
-cache.set("cat", {"kitty" : "Archie"}, ()=> {});
-cache.get("cat", ()=> {});
 
 // used for http session caching
 if (config.getSessionCachingStrategy() === "pcc") {
