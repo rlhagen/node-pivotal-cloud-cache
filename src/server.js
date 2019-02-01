@@ -5,23 +5,23 @@ import config from "./config";
 
 
 //using as a simple cache (not for http sessions)
-let cache = new GemfireStore(null, {
-    region: "generic",
-    type: process.env.TYPE || "PROXY"
-});
-
-cache.set("favorite-pets", {"kitty": "Archie"}, (err) => {
-    if (err) {
-        console.log('ERROR: ', err);
-    }
-});
-cache.get("favorite-pets", (err, result) => {
-    if (err) {
-        console.log('ERROR: ', err);
-    } else {
-        console.log('found = ', result);
-    }
-});
+// let cache = new GemfireStore(null, {
+//     region: "generic",
+//     type: process.env.TYPE || "PROXY"
+// });
+//
+// cache.set("favorite-pets", {"kitty": "Archie"}, (err) => {
+//     if (err) {
+//         console.log('ERROR: ', err);
+//     }
+// });
+// cache.get("favorite-pets", (err, result) => {
+//     if (err) {
+//         console.log('ERROR: ', err);
+//     } else {
+//         console.log('found = ', result);
+//     }
+// });
 // end of simple cache example
 
 let app = express();
